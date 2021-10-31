@@ -1,0 +1,31 @@
+Dockerコンテナのデプロイ
+
+■学習環境
+・AWS：Cloud9
+・OS ：Ubuntu
+
+■コンテナでアプリケーションを実行
+# gihyodocker/echo というDockerイメージの取得
+docker image pull gihyodocker/echo:latest
+
+# docker container runコマンドで実行
+docker container run -t -p 9000:8080 gihyodocker/echo:latest
+
+# 別のターミナルでcurlコマンドでアクセス
+curl http://localhost:9000/
+
+# Docker イメージをビルド
+# docker image build [options] (DockerfileのあるディレクトリのパスURL)
+docker image build -t example/echo:latest .
+
+# 作成されたイメージの確認
+docker image ls
+
+# 作成したイメージを実行（フォアグラウンド）
+docker container run example/echo:latest
+
+# 作成したイメージを実行（バックグラウンド）
+docker container -d run example/echo:latest
+
+# Dockerイメージをビルドする
+docker container stop $(docker container ls --filter "ancestor=example/echo" -q)

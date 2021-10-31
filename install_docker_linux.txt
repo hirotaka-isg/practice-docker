@@ -1,0 +1,27 @@
+
+■学習環境
+・AWS：Cloud9
+・OS ：Ubuntu
+
+■Linux環境へのインストール
+aptパッケージの最新化
+sudo apt update -y
+
+取得
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+
+再度aptパッケージの最新化
+sudo apt update -y
+
+インストールしたいバージョンを指定してDocker CEインストール
+sudo apt install -y docker-ce
+
+教材に記載されてたコマンドだがうまくインストールされない
+sudo apt install -y docker-ce=18.03.0~ce-0~ubuntu
+
+ネットから拾ってきて加工したコマンド
+sudo apt install -y docker-ce=18.06.0~ce~3-0~ubuntu
+
+インストール・バージョン確認
+docker version
+
