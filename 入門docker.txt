@@ -1,0 +1,37 @@
+入門Docker
+
+■Ubuntuを動かす
+
+# DockerHub上からローカルへ取得
+docker pull ubuntu
+
+# Play with Docker上のホストがAlpineLinuxで動いていることを確認
+cat /etc/issue
+
+# UbuntuのImageを実行し、その引数へ cat /etc/hosts を渡
+docker run ubuntu cat /etc/issue
+
+■bashを使用する
+# 対話的な入力が必要なプロセスも実行が可能
+# 対話的に使用するためには -i -t オプション
+docker run -i -t ubuntu bash
+
+■好きな言語でDockerを起動する
+# Rubyを探してみる
+docker search ruby
+
+■Dockerfileを記述
+1. 環境の用意
+cd ~
+mkdir -p docker/ubuntu
+cd docker/ubuntu
+echo "hello docker !" > hello.txt
+vi Dockerfile
+
+2. Dockerfile の編集
+FROM ubuntu
+COPY hello.txt /tmp/hello.txt
+CMD ["cat", "/tmp/hello.txt"]
+
+3. Docker Image のビルド&実行
+docker build -t hello .
