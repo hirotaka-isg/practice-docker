@@ -33,16 +33,110 @@ DockerDesktopの設定メニュー
 DockerDesktopの動作確認(確認用のイメージを起動)
 	docker run hello-world
 
+Docker run コマンドを複数のコマンドに分割した場合
+	Docker pull：イメージの取得
+	docker create：コンテナの作成
+	docker start：コンテナの起動
+
+Docker Hubとは
+	・Dockerイメージのレジストリサービス
+	・Dockerイメージの公開、検索、ダウンロードすることができる
+
+WebサイトのURL
+	https://hub.docker.com
+
+タグを指定して実行
+	docker run hello-world:latest
+
+Dockerイメージとは
+	・コンテナ実行に必要なファイルをまとめたファイルシステム
+	・AUFSなどの特殊なファイルシステムが使用されている
+	・イメージ上のデータはレイヤで構成され読み取り専用
+
+Whalesayコンテナの実行とDockerイメージダウンロード
+	Whalesayイメージを使用してクジラに喋らせる
+		docker run docker/whalesay [コンテナ内で呼び出すコマンド]
+		docker run docker/whalesay cowsay yaho!!
+
+イメージにタグ付けするコマンド
+	docker タグ付けするサブコマンド 元となるイメージ 新しいイメージ
+	docker tag docker/whalesay my_whalesay
+	docker tag docker/whalesay my_whalesay:ver1
+
+イメージの詳細情報を表示するコマンド
+	docker inspect [イメージ名・イメージID]
+	docker inspect my_whalesay
+
+ローカルのイメージを削除するコマンド
+※矯正終了する場合は-f
+	docker rmi [イメージ名・イメージID]
+	docker rmi -f [イメージ名・イメージID]
+
+イメージを取得(PULL)するコマンド
+	docker pull [イメージ名]
+	docker pull docker/whalesay
+
+Dockerfileからイメージをビルドするコマンド
+	docker build -t docker-whale .
+	
+	ビルドしたイメージの実行
+	docker run docker-whale
+
+レジストリサーバへログインするコマンド
+	Docker Hubにログインする場合
+	docker login
+	
+	Quay.ioにログインする場合
+	docker login quay.io
+
+Docker HubにPushする際のコマンド
+	docker push <docker ID>/<イメージ名>:<タグ名>
+
+Dockerイメージの削除
+	docker images でIMAGE IDを表示
+	docker rmi -f [IMAGE ID]
+
+Docker Hubから自分がpushしたイメージを取得
+	docker pull hirotakaisg/docker-whale:ver1
+
+nginxコンテナの実行とデタッチモード
+	nginxのコンテナを立ち上げるコマンド
+	\(バックスラッシュ)を入れることでコマンドを複数行にわたって記述できる
+		docker run --name <コンテナ名> -d \
+		-p <ホスト側のポート番号>:<コンテナ側のポート番号> \
+		<イメージ名>
+
+	nginxの起動
+	docker run --name test-nginx -d -p 8080:80 nginx
+	localhost:8080
+
+	nginxの停止
+	docker stop test-nginx
+
+	nginxのコンテナの削除
+	docker rm test-nginx
+
+バインドマウント
+	docker run --name some-nginx -v /some/content:/usr/share/nginx/html:ro -d nginx
+	docker run --name first-nginx -v /Users/hirotaka/git/practice-docker/html:/usr/share/nginx/html:ro -d -p 8080:80 nginx
+
+編集する設定ファイルを取り出す
+	docker run --name tmp-nginx --rm -d nginx
+
+docker cpコマンドの説明
+	ホストマシンのファイルをコンテナ内にコピーする場合
+	docker cp <ホスト上のコピーしたいファイルのパス> <コンテナ名 or ID>:<コピー先のパス>
 
 
+	コンテナ内のファイルをホストマシンにコピーする場合
+	docker cp <コンテナ名 or ID>:<コンテナ上のコピーしたいファイルのパス> <コピー先のパス>
+	docker cp tmp-nginx:/etc/nginx/conf.d/default.conf ./
 
 
+コンテナのライフサイクル
+	docker create --name status-test -it alpine /bin/sh
+	docker start status-test
 
-
-
-
-
-
-
+コンテナのシェルへの接続
 
 
