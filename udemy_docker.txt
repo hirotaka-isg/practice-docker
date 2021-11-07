@@ -138,5 +138,82 @@ docker cpコマンドの説明
 	docker start status-test
 
 コンテナのシェルへの接続
+	ubuntuコンテナの起動
+	docker run --name connect-test -t -d ubuntu /bin/bash
+	docker start connect-test
+	
+	接続
+	docker attach connect-test
+	docker exec -it connect-test /bin/bash
+
+docker commitコマンド
+	docker commit <コンテナ名 or コンテナID> <イメージ名>:<タグ名>
+
+	ubuntuを起動しシェルにログイン
+	docker run --name commit-test -it -d ubuntu /bin/bash
+	docker exec -it commit-test /bin/bash
+
+	10MBのダミーファイルを作成
+	cd /tmp/
+	dd if=/dev/zero of=tempfile bs=1M count=10
+
+	イメージの作成
+	docker commit commit-test commit-test:ver2
+	docker images
+
+	作成したダミーファイルがいきているか確認
+	docker run -it commit-test:ver2 bin/bash
+
+	??
+	docker history commit-test:ver2
+
+linkオプション
+	docker atttachを使用する場合
+	docker run --link <コンテナ名 or  コンテナID>:<リンク先コンテナの別名>
+
+linkオプションをつけた場合の動作
+	・コンテナ名、またはエイリアス名でリンク先に通信できるようになる
+	・リンク先の環境変数やリンク先コンテナのネットワークに関する環境変数が起動したコンテナに追加される
+	
+
+	リバースプロキシの用意
+	mkdir reverse-proxy
+
+	nginx用のリバースプロキシの設定ファイルを用意
+	vim reverse_proxy.conf
+	
+	Dockerfileの編集
+	vim Dockerfile
+	
+	docker build -t reverse-proxy .
+	static-siteの起動
+	docker run --name static-site -e AUTHOR="Hirotaka" -d dockersamples/static-site
+	reverse-proxyの起動
+	docker run --name reverse-proxy -p 8080:8080 --link static-site:ss -d reverse-proxy
+	
+	localhost:8080 #ブラウザ表示されるか確認
+	reverse-proxy内部の設定を確認
+	docker exec -it reverse-proxy /bin/bash
+	cat /etc/hosts
+	
+
+docker-machineコマンドのインストール(macの場合)
+# curlコマンドを使えるようにする
+brew install curl
+# docker-machineのインストール
+curl -L https://github.com/docker/machine/releases/download/v0.16.2/docker-machine-`uname -s`-`uname -m` >/usr/local/bin/docker-machine && chmod +x /usr/local/bin/docker-machine
+
+AWSへのDockerホストのプロビジョニング ★
+AIM
+ユーザ名:docker-test
 
 
+Dockerのネットワーク
+	ip addr show
+
+
+docker inspect bridge
+
+dockerはデフォルトでは名前解決で通信できないのでDNSサーバを立てる
+	docker network connect my_nw alpine1
+	docker network connect my_nw alpine2
