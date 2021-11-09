@@ -208,7 +208,7 @@ AIM
 ユーザ名:docker-test
 
 
-Dockerのネットワーク
+Dockerのネットワーク ★
 	ip addr show
 
 
@@ -217,3 +217,16 @@ docker inspect bridge
 dockerはデフォルトでは名前解決で通信できないのでDNSサーバを立てる
 	docker network connect my_nw alpine1
 	docker network connect my_nw alpine2
+
+
+Dockerデータ管理の概要
+	コンテナ間のデータ共有ができない
+	コンテナが消えるとデータも消える
+
+	volumeの使い方
+	docker-machime ssh vol-test
+	docker create my 
+
+
+
+
