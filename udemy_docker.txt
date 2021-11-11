@@ -227,6 +227,25 @@ Dockerデータ管理の概要
 	docker-machime ssh vol-test
 	docker create my 
 
+Docker Compose
+	ymlファイルを使用して、各dockerを起動・停止する
+	
+	Composeのステップ
+		1. Dockerfileを用意をするか、使用するイメージをDocker Hubなどに用意する
+		2. docker-compose.ymlを定義する
+		3. docker-compose upを実行する
 
+	Docker Composeのバージョン確認　※dockerインストール時に合わせてインストールされている
+	docker-compose -v
 
-
+	Docker Composeを使用したDjangoの開発環境構築
+		djangoディレクトリの作成
+		ファイル作成
+			docker-compose.yml
+			Dockerfile
+			requirements.txt
+		実行
+			docker-compose run web django-admin.py startproject examlepj . ←うまく起動しない
+		作成されたディレクトリ・ファイルの確認
+			ls -l
+		
