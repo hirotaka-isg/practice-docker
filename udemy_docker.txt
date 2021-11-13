@@ -249,3 +249,26 @@ Docker Compose
 		作成されたディレクトリ・ファイルの確認
 			ls -l
 		
+	Docker Composeを使用したRuby on Railsの開発環境構築
+	mkdir ror #ディレクトリの作成
+		ファイル作成
+			docker-compose.yml
+			Gemfile
+			Gemfile.lock
+			Dockerfile
+		実行
+			docker-compose run web rails new . --force --database=postgresql
+			docker-compose build
+			
+		vim config/database.ymlに追記
+			host: db
+			username: postgres
+			password:
+		docker-compose up -d
+		docker-compose run web rake db:create
+		
+		webに接続
+			localhost:3000
+
+
+
