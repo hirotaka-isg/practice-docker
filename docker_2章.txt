@@ -1,0 +1,111 @@
+Dockerコンテナのデプロイ
+
+■学習環境
+・AWS：Cloud9
+・OS ：Ubuntu
+
+■コンテナでアプリケーションを実行
+# gihyodocker/echo というDockerイメージの取得
+docker image pull gihyodocker/echo:latest
+
+# docker container runコマンドで実行
+docker container run -t -p 9000:8080 gihyodocker/echo:latest
+
+# 別のターミナルでcurlコマンドでアクセス
+curl http://localhost:9000/
+
+#コンテナの停止
+docker ps
+docker container stop e9b8ef919b27
+
+#echoフォルダの配下にDocerfile, main.goの作成
+#main.goの実行
+go run /echo/main.go
+
+# Docker イメージをビルド
+# docker image build [options] (DockerfileのあるディレクトリのパスURL)
+docker image build -t example/echo:latest .
+
+# 作成されたイメージの確認
+docker image ls
+
+# 作成したイメージを実行（フォアグラウンド）
+docker container run example/echo:latest
+
+# 作成したイメージを実行（バックグラウンド）
+docker container -d run example/echo:latest
+
+# Dockerイメージをビルドする
+docker container stop $(docker container ls --filter "ancestor=example/echo" -q)
+
+■Dockerコンテナの操作
+# コンテナの作成と実行
+docker container run [options] イメージ名[:タグ名]
+docker container run [options] イメージID
+
+# 名前付きコンテナ
+# コンテナIDの確認の手間が省ける / 本番ではあまり利用されない
+docker container run -t -d --name gihyo-echo example/echo:latest
+
+# コンテナの一覧
+docker container ls [options]
+
+# コンテナIDだけの抽出
+docker container ls -q
+
+# 特定の条件に一致するものだけ抽出
+docker container ls --filter "filter名=値"
+
+# 終了したコンテナを取得
+docker container ls -a
+
+# コンテナの停止
+docker container stop コンテナ名 or コンテナID
+
+# コンテナの再起動
+docker container restart コンテナID or コンテナ名
+
+# コンテナの破棄
+docker continer rm コンテナID or コンテナ名
+
+# 標準出力の取得
+docker container logs コンテナID or コンテナ名
+
+# 実行中コンテナでのコマンド実行
+docker container exec [options] コンテナID or コンテナ名 コンテナ内で実行するコマンド
+
+# ファイルのコピー
+docker container cp [options] コンテナID or コンテナ名:コンテナ内のコピー元 ホストのコピー先
+
+# 実行していないコンテナの破棄
+docker container prune [options]
+
+# イメージの破棄
+docker image prune [options]
+
+# 利用されていないDockerコンテナやイメージ、ボリューム、ネットワークといった全てのDockerリソースを一括で削除する
+docker system prune
+
+# 利用状況の取得
+docker container stats [options] [表示するコンテナID..]
+
+# docker-composeによるコンテナの実行
+# composeはyml形式の設定ファイルで複数のコンテナ実行を一括で管理
+
+# バージョンの確認
+docker-compose version
+
+docker container run -d -p 9000:8080 example/echo:latest
+
+# 定義を元にDockerコンテナ群を起動
+docker-compose up -d
+
+# コンテナの停止
+docker-compose down
+
+
+
+
+
+
+

@@ -262,13 +262,15 @@ Docker Compose
 			
 		vim config/database.ymlに追記
 			host: db
-			username: postgres
-			password:
-		docker-compose up -d
-		docker-compose run web rake db:create
+			username: postgresql
+			password:postgresql-pass
+			POSTGRES_HOST_AUTH_METHOD: 'trust'
+			
+			
+		docker-compose up -d 
+		docker-compose run web rake db:create --trace
 		
 		webに接続
 			localhost:3000
-
 
 
